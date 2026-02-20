@@ -1,0 +1,236 @@
+---
+title: Quartoの練習
+subtitle: 文書のサブタイトル
+author:
+  - name: 尾崎大輔
+    affiliation: 東京都立大学
+    email: ozaki-daisuke@ed.tmu.ac.jp
+    url: https://researchmap.jp/daisukeozaki0820
+  - name: ぽよんぽよん
+    affiliation: 国立ソウル大学校
+date: 1986/10/8
+date-modified: today
+lang: ja
+abstract: |
+      ここに概要が入る
+      長ければ改行しても良い
+
+format: 
+  html:
+    grid:
+      body-width: 1024px
+    theme: flatly
+    highlight-style: a11y
+    toc: true
+    toc-location: right
+    toc-depth: 3
+    number-sections: true
+    code-annotations: select
+
+
+knitr: 
+  opts_chunk: 
+    dev: ragg_png
+    fig-align: center
+    dpi: 300
+    message: false
+    warning: false
+
+bibliography: references.bib
+---
+
+## 相互参照 {#sec-cross-ref}
+
+@fig-my-histgram を見てください。
+
+@tbl-my-table1 も見てください。
+
+```{r}
+#| echo: false
+#| label: fig-my-histgram
+#| fig-cap: 謎のヒストグラム
+
+hist(rnorm(10000))
+
+```
+
+```{r}
+#| label: tbl-my-table1
+#| tbl-cap: 謎の表
+
+
+gt::gt(head(iris))
+```
+
+### 図 {#sec-cross-fig}
+
+@fig-r-cat-1 は私が書きました。
+
+@tbl-toush は適当に作った表です。
+
+![R猫](figs/rcat.png){#fig-r-cat-1 fig-align="left"}
+
+| Name     | Age |
+|----------|-----|
+| Takaichi | 64  |
+| Ogawa    | 54  |
+
+: 与野党党首年齢 {#tbl-toush}
+
+::: {#fig-rcats layout-ncol="2"}
+![R猫初号機](figs/rcat_1.png){#fig-rcats1gou width="150px"}
+
+![R猫弐号機](figs/rcat_2.png){#fig-rcats2gou width="150px"}
+
+:R猫2匹
+:::
+
+@fig-rcats はエヴァR猫です。 @fig-rcats1gou は初号機です。
+
+::: {#tbl-tables layout-ncol="2"}
+| Name     | Age |
+|----------|-----|
+| Takaichi | 64  |
+| Ogawa    | 54  |
+
+: 党首たち1 {#tbl-table1}
+
+| Name      | Age |
+|-----------|-----|
+| Takaichi  | 64  |
+| Yoshimura | 51  |
+
+: 党首たち1 {#tbl-table1}
+
+党首たちの表
+:::
+
+```{r}
+#| label: fig-scatter-plots
+#| layout-ncol: 2
+#| fig-cap: 散布図2つ
+#| fig-subcap: 
+#|   - 散布図1
+#|   - 散布図2
+
+plot(1:10)
+plot(1:20)
+```
+
+@fig-scatter-plots には、 @fig-scatter-plots-1 と @fig-scatter-plots-2 が含まれています。
+
+### 数式 {#sec-cross-eq}
+
+@eq-poisson はポアソン分布の確率密度関数です。
+
+$$
+p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
+$$ {#eq-poisson}
+
+### 見出しの相互参照
+
+@sec-cross-ref と参照。
+
+[-@sec-cross-ref] で数字だけ持ってくる
+
+@sec-cross-fig も @sec-cross-eq も引っ張れる
+
+[-@sec-cross-fig] も [-@sec-cross-eq] で数字だけ引っ張れる
+
+### 引用
+
+bibファイルを使って引用ができる。 `@+bib-key` で行ける
+
+@knuth_1984
+
+[@knuth_1984]
+
+@imai_williams_2022
+
+[-@imai_williams_2022]
+
+## コールアウト
+
+::: callout-note
+#### コールアウトの題目
+
+「`:::`」で囲ったエリアをフェンスと呼ぶ。あるいはコールアウト環境などとも呼ばれる。
+:::
+
+::: callout-important
+#### コールアウトの題目
+
+「`:::`」で囲ったエリアをフェンスと呼ぶ。あるいはコールアウト環境などとも呼ばれる。
+:::
+
+::: {.callout-important icon="false"}
+#### アイコンを消したい
+
+「`:::`」で囲ったエリアをフェンスと呼ぶ。あるいはコールアウト環境などとも呼ばれる。
+:::
+
+:::{.callout-tip collapse="true"}
+#### 題目だけ表示して中身は隠す。クリックすると出る。これは便利！
+
+「`:::`」で囲ったエリアをフェンスと呼ぶ。あるいはコールアウト環境などとも呼ばれる。
+
+:::
+
+## パネル
+
+::: panel-tabset
+##### コード
+
+``` r
+plot(rnorm(1000), type = "b")
+```
+
+##### 結果
+
+```{r}
+#| echo: false
+plot(rnorm(1000), type = "b")
+```
+:::
+
+## 段組み
+
+段組みの場合はフェンスはコロン4つ `:::: {.colums}`
+
+:::: columns
+
+::: {.column width="50%"}
+**Input**
+
+``` r
+x <- 1:10
+sum(x)
+```
+:::
+
+::: {.column width="50%"}
+**Output**
+
+```{r}
+#| echo: false
+
+x <- 1:10
+sum(x)
+```
+:::
+
+::::
+
+
+## コードの注釈
+
+```{r}
+x <- 1:10    #<1>
+y <- sum(x)  #<2>
+print(y)     #<3>
+```
+
+
+1. ベクトル`x`を作成する。
+2. `x`の和を`y`に格納し、出力する
+
